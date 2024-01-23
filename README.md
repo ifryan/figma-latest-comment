@@ -38,3 +38,8 @@ We recommend writing TypeScript code using Visual Studio code:
     you reopen Visual Studio Code.
 
 That's it! Visual Studio Code will regenerate the JavaScript file every time you save.
+
+
+# todo
+- [] 评论框中回复会导致order_id为null，需要判断parent_id是否为空来跳过
+- [] node_id 为空
