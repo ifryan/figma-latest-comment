@@ -1,7 +1,7 @@
 <body id="body">
-  <p onclick="selectText(this)">
+  <!-- <p onclick="selectText(this)">
 
-  </p>
+  </p> -->
 </body>
 <style>
   #body {
@@ -11,13 +11,19 @@
   p {
     width: 100% !important;
     word-break: break-all;
+    font-size: 12px;
   }
 </style>
 <script>
   // 接受code.ts参数
   onmessage = (event) => {
-    console.log("got this from the plugin code", event.data.pluginMessage)
-    document.querySelector("p").innerText = event.data.pluginMessage;
+    // console.log("got this from the plugin code", event.data.pluginMessage)
+    event.data.pluginMessage.forEach(element => {
+      const createP = document.createElement('p');
+      createP.innerHTML = element;
+      createP.addEventListener('click', () => selectText(createP));
+      document.querySelector("#body").appendChild(createP);
+    });
   }
 
 
