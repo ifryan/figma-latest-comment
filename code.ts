@@ -5,7 +5,7 @@ interface comments {
 }
 
 // 展示评论数量
-var num = 62;
+var num = 1000;
 
 // filekey辞典
 const tree = {
@@ -32,19 +32,20 @@ async function getComment(fileUrl: string) {
       let sortedJson = json.comments.slice().sort((a: comments, b: comments) => parseInt(b.order_id) - parseInt(a.order_id));
       console.log(sortedJson);
       const text = [];
-      for (let i = 0; i < sortedJson.length + 1; i++) {
+      for (let i = 0; i < num; i++) {
         // 达到约定数量或者展示全部条数
-        if (sortedJson[i].parent_id == '') {
-          if (i >= num || i === sortedJson.length) {
-            figma.ui.postMessage(text);
-            // console.log(text);
-            break;
-          }
+        if (i === sortedJson.length) {
+          figma.ui.postMessage(text);
+          // console.log(text);
+          break;
+        }
+        // 判断是否为子评论
+        if (sortedJson[i].client_meta !== null) {
           const commentLink = "https://www.figma.com/file/" + tree[fileName] + "?node-id=" + sortedJson[i].client_meta.node_id + "#" + sortedJson[i].id;
           text.push(`#${sortedJson[i].order_id} ${sortedJson[i].message}</br>${commentLink}`)
-        } else {
-          continue;
         }
+
+
       }
       // 传递参数
 
