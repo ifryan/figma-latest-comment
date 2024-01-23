@@ -1,16 +1,41 @@
 <body id="body">
+  <p onclick="selectText(this)">
 
+  </p>
 </body>
 <style>
   #body {
     font-family: Microsoft YaHei, Noto Sans CJK SC, WenQuanYi Micro Hei, Arial, sans-serif;
+  }
+
+  p {
+    width: 100% !important;
+    word-break: break-all;
   }
 </style>
 <script>
   // 接受code.ts参数
   onmessage = (event) => {
     console.log("got this from the plugin code", event.data.pluginMessage)
-    document.querySelector("#body").innerHTML = event.data.pluginMessage;
-
+    document.querySelector("p").innerText = event.data.pluginMessage;
   }
+
+
+  // 点击全选文字 
+
+  function selectText(element) {
+    if (document.selection) { // IE内核浏览器
+      var range = document.body.createTextRange();
+      range.moveToElementText(element);
+      range.select();
+    } else if (window.getSelection) { // 非IE内核浏览器
+      var selection = window.getSelection();
+      var range = document.createRange();
+      range.selectNodeContents(element);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+  }
+
+
 </script>
