@@ -1,0 +1,17 @@
+{
+  "name": "latestComment",
+  "id": "1331602396806741261",
+  "api": "1.0.0",
+  "main": "code.js",
+  "capabilities": [],
+  "enableProposedApi": false,
+  "editorType": [
+    "figma"
+  ],
+  "ui": "ui.html",
+  "networkAccess": {
+    "allowedDomains": [
+      "https://api.figma.com"
+    ]
+  }
+}

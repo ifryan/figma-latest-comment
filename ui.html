@@ -1,0 +1,16 @@
+<body id="body">
+
+</body>
+<style>
+  #body {
+    font-family: Microsoft YaHei, Noto Sans CJK SC, WenQuanYi Micro Hei, Arial, sans-serif;
+  }
+</style>
+<script>
+  // 接受code.ts参数
+  onmessage = (event) => {
+    console.log("got this from the plugin code", event.data.pluginMessage)
+    document.querySelector("#body").innerHTML = event.data.pluginMessage;
+
+  }
+</script>
