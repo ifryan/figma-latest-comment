@@ -12,5 +12,8 @@
   "devDependencies": {
     "@figma/plugin-typings": "*",
     "typescript": "*"
+  },
+  "dependencies": {
+    "axios": "^1.6.5"
   }
 }
