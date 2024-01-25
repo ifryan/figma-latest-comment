@@ -1,7 +1,5 @@
 <body id="body">
-  <!-- <p onclick="selectText(this)">
-
-  </p> -->
+  <p class="loading">loading comments ...</p>
 </body>
 <style>
   #body {
@@ -13,11 +11,16 @@
     word-break: break-all;
     font-size: 12px;
   }
+
+  .loading {
+    display: block;
+  }
 </style>
 <script>
   // 接受code.ts参数
   onmessage = (event) => {
     // console.log("got this from the plugin code", event.data.pluginMessage)
+    document.querySelector(".loading").style.display = "none";
     event.data.pluginMessage.forEach(element => {
       const createP = document.createElement('p');
       createP.innerHTML = element;
