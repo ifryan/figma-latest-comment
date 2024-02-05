@@ -7,11 +7,15 @@
   </ul>
   <form id="token" class="">
     <div class="flexcol">
-      <label for="projectUrl">请输入当前 Figma Team 的链接，如（https://www.figma.com/files/team/1128603199120173）</label>
-      <input type="text" name="projectUrl" id="projectUrl" placeholder="请输入 Figma Team Link" value="">
+      <div class="flex spacebe-tween">
+        <label for="projectUrl" class="label">请输入 Team ID</label>
+      </div>
+      <input type="text" name="projectUrl" id="projectUrl" placeholder="请输入 Figma Team ID" value="">
     </div>
     <div class="flexcol">
-      <label for="figmaToken">请输入你的 Figma Token</label>
+      <div class="flex spacebe-tween">
+        <label for="figmaToken" class="label">请输入你的 Figma Token</label>
+      </div>
       <input type="text" name="figmaToken" id="figmaToken" placeholder="请输入 Figma Token" value="">
     </div>
     <div>
@@ -26,6 +30,19 @@
 </body>
 
 <style>
+  .readme {
+    color: #999;
+    font-size: x-small;
+  }
+
+  .label {
+    flex: 1;
+  }
+
+  .space-between {
+    justify-content: space-between;
+  }
+
   #loading {
     position: fixed;
     align-items: center;

@@ -1,45 +1,21 @@
-Below are the steps to get your plugin running. You can also find instructions at:
+# Figma-latest-comment
 
-  https://www.figma.com/plugin-docs/plugin-quickstart-guide/
+本插件用于展示当前 figma 文件中最新的 10 条评论列表，展示格式如下：
+```
+{评论序号} {评论正文}
+{评论链接}
+```
+简化向开发交付格式文本时的操作复杂度
 
-This plugin template uses Typescript and NPM, two standard tools in creating JavaScript applications.
+## 如何获取 teamID
 
-First, download Node.js which comes with NPM. This will allow you to install TypeScript and other
-libraries. You can find the download link here:
+1. 获取 teamURL 
+  ![alt text](image.png)
+2. 从 teamURL 中结尾的数字即为 teamID
 
-  https://nodejs.org/en/download/
+## 如何获取 Figma Token
 
-Next, install TypeScript using the command:
-
-  npm install -g typescript
-
-Finally, in the directory of your plugin, get the latest type definitions for the plugin API by running:
-
-  npm install --save-dev @figma/plugin-typings
-
-If you are familiar with JavaScript, TypeScript will look very familiar. In fact, valid JavaScript code
-is already valid Typescript code.
-
-TypeScript adds type annotations to variables. This allows code editors such as Visual Studio Code
-to provide information about the Figma API while you are writing code, as well as help catch bugs
-you previously didn't notice.
-
-For more information, visit https://www.typescriptlang.org/
-
-Using TypeScript requires a compiler to convert TypeScript (code.ts) into JavaScript (code.js)
-for the browser to run.
-
-We recommend writing TypeScript code using Visual Studio code:
-
-1. Download Visual Studio Code if you haven't already: https://code.visualstudio.com/.
-2. Open this directory in Visual Studio Code.
-3. Compile TypeScript to JavaScript: Run the "Terminal > Run Build Task..." menu item,
-    then select "npm: watch". You will have to do this again every time
-    you reopen Visual Studio Code.
-
-That's it! Visual Studio Code will regenerate the JavaScript file every time you save.
-
-
-# todo
-- [] 评论框中回复会导致order_id为null，需要判断parent_id是否为空来跳过
-- [] node_id 为空
+1. 登录你的 figma 账号
+2. 点击页面左上角「setting」菜单
+3. 找到「Personal access tokens」区域
+4. 点击「Generate new token」创建
