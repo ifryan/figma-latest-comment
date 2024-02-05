@@ -1,36 +1,167 @@
 <body id="body">
-  <p class="loading">loading comments ...</p>
+  <div class="flex" id="loading">loading...</div>
+
+  <ul class="flex tab">
+    <li id="tab1" class="navtab actived">Setting</li>
+    <li id="tab2" class="navtab">Comments</li>
+  </ul>
+  <form id="token" class="">
+    <div class="flexcol">
+      <label for="projectUrl">请输入当前 Figma Team 的链接，如（https://www.figma.com/files/team/1128603199120173）</label>
+      <input type="text" name="projectUrl" id="projectUrl" placeholder="请输入 Figma Team Link" value="">
+    </div>
+    <div class="flexcol">
+      <label for="figmaToken">请输入你的 Figma Token</label>
+      <input type="text" name="figmaToken" id="figmaToken" placeholder="请输入 Figma Token" value="">
+    </div>
+    <div>
+      <label for="submit" id="submitBtn">submit</label>
+      <input type="button" value="submit" id="submit" class="hide">
+    </div>
+  </form>
+
+  <div id="result" class="hide">
+  </div>
+
 </body>
+
 <style>
+  #loading {
+    position: fixed;
+    align-items: center;
+    justify-content: center;
+    width: 384px;
+    height: 292px;
+    background-color: #ffffff;
+    text-align: center;
+  }
+
+  #result {
+    margin-top: 16px;
+    background-color: #eee;
+    padding: 16px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  label {
+    font-size: small;
+    color: #666;
+  }
+
+  input {
+    height: 28px;
+    font-size: small;
+    border: #666 1px solid;
+    border-radius: 4px;
+    padding: 8px;
+  }
+
+  #submitBtn {
+    border-radius: 4px;
+    font-size: small;
+    margin-top: 16px;
+    display: flex;
+    width: calc(100vw-100px);
+    height: 32px;
+    background-color: black;
+    color: #fff;
+    justify-content: center;
+    align-items: center;
+  }
+
   #body {
     font-family: Microsoft YaHei, Noto Sans CJK SC, WenQuanYi Micro Hei, Arial, sans-serif;
   }
 
   p {
-    width: 100% !important;
     word-break: break-all;
     font-size: 12px;
+    margin-block-start: 0;
+    margin-block-end: 0;
   }
 
   .loading {
     display: block;
   }
-</style>
-<script>
-  // 接受code.ts参数
-  onmessage = (event) => {
-    // console.log("got this from the plugin code", event.data.pluginMessage)
-    document.querySelector(".loading").style.display = "none";
-    event.data.pluginMessage.forEach(element => {
-      const createP = document.createElement('p');
-      createP.innerHTML = element;
-      createP.addEventListener('click', () => selectText(createP));
-      document.querySelector("#body").appendChild(createP);
-    });
+
+  .flex {
+    display: flex;
+    gap: 16px;
   }
 
-  // 点击全选文字 
+  .flexcol {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
 
+  form {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 12px;
+  }
+
+  .navtab {
+    /* display: inline-flex; */
+    color: #999;
+    font-size: 13px;
+  }
+
+  .actived {
+    font-weight: 800;
+    color: black;
+  }
+
+  ul {
+    display: block;
+    list-style-type: none;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 0;
+  }
+
+  .hide {
+    display: none !important;
+  }
+</style>
+
+
+<script>
+
+  let tab1Boolean = true
+
+  let setting = document.querySelector('#token')
+  let comment = document.querySelector('#result')
+  let tab1 = document.querySelector('#tab1')
+  let tab2 = document.querySelector('#tab2')
+
+  // setting-点击提交按钮的事件
+  document.querySelector('#submit').addEventListener('click', (e) => {
+    if (document.querySelector('#projectUrl').value && document.querySelector('#figmaToken').value) {
+      let team_id = document.querySelector('#projectUrl').value.split(/[\,\，\s]/)
+      // https://www.figma.com/files/team/1128603199120173
+      const author = {
+        team_id,
+        headers: {
+          'X-FIGMA-TOKEN': document.querySelector('#figmaToken').value
+        }
+      }
+      //提交参数到 code.ts
+      parent.postMessage({ pluginMessage: author }, '*')
+      // console.log('parent.postMessage:', author);
+    } else {
+      alert('请输入 token 和 teamURL')
+    }
+  })
+
+  // 点击全选文字 
   function selectText(element) {
     if (document.selection) { // IE内核浏览器
       var range = document.body.createTextRange();
@@ -44,5 +175,55 @@
       selection.addRange(range);
     }
   }
+
+  //点击 tab 的事件
+  document.querySelector('.tab').addEventListener('click', (e) => {
+    e.target.id === 'tab1' ? tab1Boolean = true : tab1Boolean = false
+    if (tab1Boolean) {
+      tab1.classList.value = 'navtab actived'
+      tab2.classList.value = 'navtab'
+      setting.classList.value = ""
+      comment.classList.value = 'hide'
+    } else {
+      tab1.classList.value = 'navtab'
+      tab2.classList.value = 'navtab actived'
+      setting.classList.value = 'hide'
+      comment.classList.value = ""
+    }
+  })
+
+  // 重新渲染页面函数
+  function update() {
+    // 接受code.ts参数 接受收到的 comments 消息
+    onmessage = (event) => {
+      // console.log("got this from the plugin code", event.data.pluginMessage)
+      if (event.data.pluginMessage.token && event.data.pluginMessage.team_id) {
+        document.querySelector('#projectUrl').value = event.data.pluginMessage.team_id
+        document.querySelector('#figmaToken').value = event.data.pluginMessage.token
+        tab1Boolean = false
+        event.data.pluginMessage.comments.forEach(element => {
+          const createP = document.createElement('p');
+          createP.innerHTML = element;
+          createP.addEventListener('click', () => selectText(createP));
+          comment.appendChild(createP);
+        });
+        if (tab1Boolean) {
+          tab1.classList.value = 'navtab actived'
+          tab2.classList.value = 'navtab'
+          setting.classList.value = ""
+          comment.classList.value = 'hide'
+        } else {
+          tab1.classList.value = 'navtab'
+          tab2.classList.value = 'navtab actived'
+          setting.classList.value = 'hide'
+          comment.classList.value = ""
+        }
+        document.querySelector('#loading').classList.add('hide')
+      }
+    }
+  }
+
+  update()
+
 
 </script>
