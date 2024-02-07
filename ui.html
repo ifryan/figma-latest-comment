@@ -8,7 +8,7 @@
   <form id="token" class="">
     <div class="flexcol">
       <div class="flex spacebe-tween">
-        <label for="projectUrl" class="label">请输入 Team ID</label>
+        <label for="projectUrl" class="label" value>请输入 Team ID </label>
       </div>
       <input type="text" name="projectUrl" id="projectUrl" placeholder="请输入 Figma Team ID" value="">
     </div>
@@ -159,20 +159,20 @@
   let tab1 = document.querySelector('#tab1')
   let tab2 = document.querySelector('#tab2')
 
+
+
   // setting-点击提交按钮的事件
   document.querySelector('#submit').addEventListener('click', (e) => {
     if (document.querySelector('#projectUrl').value && document.querySelector('#figmaToken').value) {
-      let team_id = document.querySelector('#projectUrl').value.split(/[\,\，\s]/)
-      // https://www.figma.com/files/team/1128603199120173
       const author = {
-        team_id,
-        headers: {
-          'X-FIGMA-TOKEN': document.querySelector('#figmaToken').value
-        }
+        team_id: document.querySelector('#projectUrl').value,
+        token: document.querySelector('#figmaToken').value
       }
       //提交参数到 code.ts
       parent.postMessage({ pluginMessage: author }, '*')
-      // console.log('parent.postMessage:', author);
+      console.log('parent.postMessage:', author);
+
+
     } else {
       alert('请输入 token 和 teamURL')
     }
@@ -210,37 +210,34 @@
   })
 
   // 重新渲染页面函数
-  function update() {
-    // 接受code.ts参数 接受收到的 comments 消息
-    onmessage = (event) => {
-      // console.log("got this from the plugin code", event.data.pluginMessage)
-      if (event.data.pluginMessage.token && event.data.pluginMessage.team_id) {
-        document.querySelector('#projectUrl').value = event.data.pluginMessage.team_id
-        document.querySelector('#figmaToken').value = event.data.pluginMessage.token
-        tab1Boolean = false
-        event.data.pluginMessage.comments.forEach(element => {
-          const createP = document.createElement('p');
-          createP.innerHTML = element;
-          createP.addEventListener('click', () => selectText(createP));
-          comment.appendChild(createP);
-        });
-        if (tab1Boolean) {
-          tab1.classList.value = 'navtab actived'
-          tab2.classList.value = 'navtab'
-          setting.classList.value = ""
-          comment.classList.value = 'hide'
-        } else {
-          tab1.classList.value = 'navtab'
-          tab2.classList.value = 'navtab actived'
-          setting.classList.value = 'hide'
-          comment.classList.value = ""
-        }
-        document.querySelector('#loading').classList.add('hide')
-      }
+  // 接受code.ts参数 接受收到的 comments 消息
+  onmessage = (item) => {
+    const event = item.data.pluginMessage.uiConfig
+    // console.log("got this from the plugin code", item.data.pluginMessage)
+    if (event.comments.length !== 0) {
+      document.querySelector('#projectUrl').value = event.team_id
+      document.querySelector('#figmaToken').value = event.token
+      tab1Boolean = false
+      comment.innerHTML = ''
+      event.comments.forEach(element => {
+        const createP = document.createElement('p');
+        createP.innerHTML = element;
+        createP.addEventListener('click', () => selectText(createP));
+        comment.appendChild(createP);
+      });
+      tab1.classList.value = 'navtab'
+      tab2.classList.value = 'navtab actived'
+      setting.classList.value = 'hide'
+      comment.classList.value = ""
+      document.querySelector('#loading').classList.add('hide')
+    } else {
+      tab1Boolean = true
+      document.querySelector('#loading').classList.add('hide')
+      document.querySelector('#projectUrl').value = event.team_id
+      document.querySelector('#figmaToken').value = event.token
+      comment.innerHTML = '这里还没有评论'
     }
   }
-
-  update()
 
 
 </script>

@@ -1,4 +1,4 @@
-# Figma-latest-comment
+# Figma-latest-comments
 
 本插件用于展示当前 figma 文件中最新的 10 条评论列表，展示格式如下：
 ```
