@@ -99,8 +99,8 @@ async function getComment(fileID: string) {
         }
         // 判断是否为子评论
         if (sortedJson[i].client_meta !== null) {
-          const commentLink = "https://www.figma.com/file/" + uiConfig.tree[fileID] + "?node-id=" + sortedJson[i].client_meta.node_id + "#" + sortedJson[i].id;
-          uiConfig.comments.push(`#${sortedJson[i].order_id} ${sortedJson[i].message}</br>${commentLink}`)
+          const commentLink = "https://www.figma.com/file/" + fileID + "?node-id=" + sortedJson[i].client_meta.node_id + "#" + sortedJson[i].id;
+          uiConfig.comments.push(`#${sortedJson[i].order_id} ${sortedJson[i].message}</br>👉🏻 ${commentLink}`)
         }
       }
     } else {
